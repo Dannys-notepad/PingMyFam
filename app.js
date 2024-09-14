@@ -1,5 +1,6 @@
 require('dotenv').config()
 
+const path = require('path')
 const express = require('express')
 const app = express()
 const PORT = 8080
@@ -10,8 +11,9 @@ const adminRoutes = require('./src/routes/adminRoutes.js')
 
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({extended: true}))
+app.use('/public', express.static(path.join(__dirname, './public')))
 app.use(sessions({
-  secret: 'thisismykey',
+  secret: process.env.SECRET_KEY,
   saveUninitialized: true,
   cookie: {
     maxAge: 1000 * 60 * 60,
@@ -22,7 +24,6 @@ app.use(sessions({
 
 app.get('/', async (req, res) => {
   await sendMail(res)
-  //res.send('Hello')
 })
 
 app.use('/admin', adminRoutes)

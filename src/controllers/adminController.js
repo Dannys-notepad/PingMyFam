@@ -1,11 +1,11 @@
 const { admin } = require('../models/adminModel.js')
+const generate = require('../utils/generate.js')
 
 const adminHomePage = async (req, res) => {
   if(req.session.admin === undefined){
     res.redirect('/admin/login')
-  }else{
-    res.send('Welcome Admin')
   }
+  res.render('admin', {key: generate.ID()})
 }
 
 const renderAdminLogin = async (req, res) => {
